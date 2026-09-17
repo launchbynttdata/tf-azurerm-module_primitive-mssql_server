@@ -149,7 +149,7 @@ module "private_endpoint" {
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.7, < 2.0 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 4.0, < 5.0 |
 | <a name="requirement_random"></a> [random](#requirement\_random) | >= 3.0, < 4.0 |
 
@@ -177,7 +177,7 @@ module "private_endpoint" {
 |------|-------------|------|---------|:--------:|
 | <a name="input_address_space"></a> [address\_space](#input\_address\_space) | Address space for the internal-only virtual network. | `list(string)` | <pre>[<br/>  "10.60.0.0/24"<br/>]</pre> | no |
 | <a name="input_administrator_login"></a> [administrator\_login](#input\_administrator\_login) | Administrator login for the SQL Server. | `string` | `"sqladminuser"` | no |
-| <a name="input_azuread_administrator"></a> [azuread\_administrator](#input\_azuread\_administrator) | Optional Azure AD administrator block. Unused in the secure complete example. | <pre>object({<br/>    login_username              = string<br/>    object_id                   = string<br/>    tenant_id                   = optional(string)<br/>    azuread_authentication_only = optional(bool)<br/>  })</pre> | `null` | no |
+| <a name="input_azuread_administrator"></a> [azuread\_administrator](#input\_azuread\_administrator) | Optional Azure AD administrator block. Defaults to null in the complete example (SQL login authentication). | <pre>object({<br/>    login_username              = string<br/>    object_id                   = string<br/>    tenant_id                   = optional(string)<br/>    azuread_authentication_only = optional(bool)<br/>  })</pre> | `null` | no |
 | <a name="input_class_env"></a> [class\_env](#input\_class\_env) | Environment where resource is going to be deployed. For example: dev, qa, uat. | `string` | `"dev"` | no |
 | <a name="input_connection_policy"></a> [connection\_policy](#input\_connection\_policy) | Server connection type. Valid values are Default, Proxy, and Redirect. | `string` | `"Default"` | no |
 | <a name="input_express_vulnerability_assessment_enabled"></a> [express\_vulnerability\_assessment\_enabled](#input\_express\_vulnerability\_assessment\_enabled) | Whether Express Vulnerability Assessment is enabled for the SQL Server. | `bool` | `false` | no |
@@ -206,6 +206,7 @@ module "private_endpoint" {
 | <a name="output_mssql_server_fqdn"></a> [mssql\_server\_fqdn](#output\_mssql\_server\_fqdn) | Fully qualified domain name of the Microsoft SQL Server. |
 | <a name="output_mssql_server_id"></a> [mssql\_server\_id](#output\_mssql\_server\_id) | ID of the Microsoft SQL Server created by the example. |
 | <a name="output_mssql_server_name"></a> [mssql\_server\_name](#output\_mssql\_server\_name) | Name of the Microsoft SQL Server created by the example. |
+| <a name="output_outbound_network_restriction_enabled"></a> [outbound\_network\_restriction\_enabled](#output\_outbound\_network\_restriction\_enabled) | Whether outbound network traffic is restricted for the Microsoft SQL Server. |
 | <a name="output_private_dns_zone_name"></a> [private\_dns\_zone\_name](#output\_private\_dns\_zone\_name) | Name of the private DNS zone used for SQL private endpoints. |
 | <a name="output_private_endpoint_id"></a> [private\_endpoint\_id](#output\_private\_endpoint\_id) | ID of the private endpoint attached to the Microsoft SQL Server. |
 | <a name="output_public_network_access_enabled"></a> [public\_network\_access\_enabled](#output\_public\_network\_access\_enabled) | Whether public network access is enabled on the Microsoft SQL Server. |

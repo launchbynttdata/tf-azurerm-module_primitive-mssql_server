@@ -11,7 +11,7 @@
 // limitations under the License.
 
 terraform {
-  required_version = ">= 1.3"
+  required_version = ">= 1.7, < 2.0"
 
   required_providers {
     azurerm = {

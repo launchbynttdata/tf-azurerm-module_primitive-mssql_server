@@ -44,3 +44,8 @@ output "minimum_tls_version" {
   description = "Minimum TLS version configured on the Microsoft SQL Server."
   value       = azurerm_mssql_server.mssql_server.minimum_tls_version
 }
+
+output "outbound_network_restriction_enabled" {
+  description = "Whether outbound network traffic is restricted for the Microsoft SQL Server."
+  value       = azurerm_mssql_server.mssql_server.outbound_network_restriction_enabled
+}

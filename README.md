@@ -7,29 +7,6 @@
 
 Terraform primitive module that provisions a single `azurerm_mssql_server` resource. The module exposes production configuration for networking, TLS, identity, and Azure AD administration while keeping architecture-level composition in the calling example.
 
-## Usage
-
-```hcl
-module "mssql_server" {
-  source = "terraform.registry.launch.nttdata.com/module_primitive/mssql_server/azurerm"
-
-  name                         = "example-mssql-server"
-  resource_group_name          = "example-rg"
-  location                     = "eastus2"
-  server_version               = "12.0"
-  administrator_login          = "sqladminuser"
-  administrator_login_password = var.administrator_login_password
-
-  minimum_tls_version                  = "1.2"
-  public_network_access_enabled        = false
-  outbound_network_restriction_enabled = true
-
-  tags = {
-    environment = "dev"
-  }
-}
-```
-
 See `examples/complete` for a secure-by-default pattern that places the server on an internal-only virtual network with a private endpoint and a generated administrator password.
 
 <!-- BEGIN_TF_DOCS -->
@@ -37,7 +14,7 @@ See `examples/complete` for a secure-by-default pattern that places the server o
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3, < 2.0 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 4.0, < 5.0 |
 
 ## Modules
@@ -59,7 +36,7 @@ No modules.
 | <a name="input_azuread_administrator"></a> [azuread\_administrator](#input\_azuread\_administrator) | Optional Azure AD administrator block. When azuread\_authentication\_only is true, SQL login credentials are not required. | <pre>object({<br/>    login_username              = string<br/>    object_id                   = string<br/>    tenant_id                   = optional(string)<br/>    azuread_authentication_only = optional(bool)<br/>  })</pre> | `null` | no |
 | <a name="input_connection_policy"></a> [connection\_policy](#input\_connection\_policy) | Server connection type. Valid values are Default, Proxy, and Redirect. | `string` | `"Default"` | no |
 | <a name="input_express_vulnerability_assessment_enabled"></a> [express\_vulnerability\_assessment\_enabled](#input\_express\_vulnerability\_assessment\_enabled) | Whether Express Vulnerability Assessment is enabled for the SQL Server. | `bool` | `false` | no |
-| <a name="input_identity"></a> [identity](#input\_identity) | Optional managed identity configuration. Allowed type values: SystemAssigned, UserAssigned, or SystemAssigned, UserAssigned. | <pre>object({<br/>    type         = string<br/>    identity_ids = optional(list(string))<br/>  })</pre> | `null` | no |
+| <a name="input_identity"></a> [identity](#input\_identity) | Optional managed identity configuration. Allowed type values: SystemAssigned, UserAssigned, or SystemAssigned, UserAssigned. UserAssigned requires identity\_ids. | <pre>object({<br/>    type         = string<br/>    identity_ids = optional(list(string))<br/>  })</pre> | `null` | no |
 | <a name="input_location"></a> [location](#input\_location) | Azure region where the SQL Server is deployed. | `string` | n/a | yes |
 | <a name="input_minimum_tls_version"></a> [minimum\_tls\_version](#input\_minimum\_tls\_version) | Minimum TLS version for the SQL Server. Valid value is 1.2. | `string` | `"1.2"` | no |
 | <a name="input_name"></a> [name](#input\_name) | Name of the Microsoft SQL Server. Must be globally unique. | `string` | n/a | yes |
@@ -80,6 +57,7 @@ No modules.
 | <a name="output_identity"></a> [identity](#output\_identity) | Identity block exported by the Microsoft SQL Server. |
 | <a name="output_minimum_tls_version"></a> [minimum\_tls\_version](#output\_minimum\_tls\_version) | Minimum TLS version configured on the Microsoft SQL Server. |
 | <a name="output_name"></a> [name](#output\_name) | The name of the Microsoft SQL Server. |
+| <a name="output_outbound_network_restriction_enabled"></a> [outbound\_network\_restriction\_enabled](#output\_outbound\_network\_restriction\_enabled) | Whether outbound network traffic is restricted for the Microsoft SQL Server. |
 | <a name="output_public_network_access_enabled"></a> [public\_network\_access\_enabled](#output\_public\_network\_access\_enabled) | Whether public network access is enabled on the Microsoft SQL Server. |
 | <a name="output_restorable_dropped_database_ids"></a> [restorable\_dropped\_database\_ids](#output\_restorable\_dropped\_database\_ids) | A list of dropped restorable database IDs on the Microsoft SQL Server. |
 <!-- END_TF_DOCS -->
@@ -148,3 +126,26 @@ copier recopy --defaults --trust --overwrite [--prereleases]
 ```
 
 Automatic updates will run through a scheduled workflow, and if the post-update tests are successful, the Pull Request created will automatically merge. Conflicts in the update or failures to test may leave a Pull Request outstanding, which needs to be addressed by a Launch Engineer.
+
+## Usage
+
+```hcl
+module "mssql_server" {
+  source = "terraform.registry.launch.nttdata.com/module_primitive/mssql_server/azurerm"
+
+  name                         = "example-mssql-server"
+  resource_group_name          = "example-rg"
+  location                     = "eastus2"
+  server_version               = "12.0"
+  administrator_login          = "sqladminuser"
+  administrator_login_password = var.administrator_login_password
+
+  minimum_tls_version                  = "1.2"
+  public_network_access_enabled        = false
+  outbound_network_restriction_enabled = true
+
+  tags = {
+    environment = "dev"
+  }
+}
+```

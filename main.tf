@@ -46,4 +46,23 @@ resource "azurerm_mssql_server" "mssql_server" {
   }
 
   tags = var.tags
+
+  lifecycle {
+    precondition {
+      condition = (
+        try(var.azuread_administrator.azuread_authentication_only, false) ||
+        (var.administrator_login != null && var.administrator_login != "" && var.administrator_login_password != null && var.administrator_login_password != "")
+      )
+      error_message = "administrator_login and administrator_login_password are required unless azuread_administrator.azuread_authentication_only is true."
+    }
+
+    precondition {
+      condition = (
+        var.identity == null ||
+        var.identity.type == "SystemAssigned" ||
+        (var.primary_user_assigned_identity_id != null && var.primary_user_assigned_identity_id != "")
+      )
+      error_message = "primary_user_assigned_identity_id is required when identity.type includes UserAssigned."
+    }
+  }
 }

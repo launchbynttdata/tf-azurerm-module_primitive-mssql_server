@@ -77,7 +77,7 @@ variable "express_vulnerability_assessment_enabled" {
 }
 
 variable "identity" {
-  description = "Optional managed identity configuration. Allowed type values: SystemAssigned, UserAssigned, or SystemAssigned, UserAssigned."
+  description = "Optional managed identity configuration. Allowed type values: SystemAssigned, UserAssigned, or SystemAssigned, UserAssigned. UserAssigned requires identity_ids."
   type = object({
     type         = string
     identity_ids = optional(list(string))
@@ -85,15 +85,21 @@ variable "identity" {
   default = null
 
   validation {
-    condition = try(
-      var.identity == null || contains([
-        "SystemAssigned",
-        "UserAssigned",
-        "SystemAssigned, UserAssigned"
-      ], var.identity.type),
-      true
-    )
+    condition = var.identity == null || contains([
+      "SystemAssigned",
+      "UserAssigned",
+      "SystemAssigned, UserAssigned"
+    ], var.identity.type)
     error_message = "identity.type must be SystemAssigned, UserAssigned, or SystemAssigned, UserAssigned."
+  }
+
+  validation {
+    condition = (
+      var.identity == null ||
+      var.identity.type == "SystemAssigned" ||
+      (var.identity.identity_ids != null && length(var.identity.identity_ids) > 0)
+    )
+    error_message = "identity.identity_ids must be provided when identity.type includes UserAssigned."
   }
 }
 

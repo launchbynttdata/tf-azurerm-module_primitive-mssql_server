@@ -153,7 +153,7 @@ variable "administrator_login" {
 }
 
 variable "azuread_administrator" {
-  description = "Optional Azure AD administrator block. Unused in the secure complete example."
+  description = "Optional Azure AD administrator block. Defaults to null in the complete example (SQL login authentication)."
   type = object({
     login_username              = string
     object_id                   = string

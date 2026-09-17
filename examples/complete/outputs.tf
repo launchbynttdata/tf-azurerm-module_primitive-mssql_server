@@ -40,6 +40,11 @@ output "minimum_tls_version" {
   value       = module.mssql_server.minimum_tls_version
 }
 
+output "outbound_network_restriction_enabled" {
+  description = "Whether outbound network traffic is restricted for the Microsoft SQL Server."
+  value       = module.mssql_server.outbound_network_restriction_enabled
+}
+
 output "vnet_id" {
   description = "ID of the internal-only virtual network."
   value       = module.vnet.vnet_id
