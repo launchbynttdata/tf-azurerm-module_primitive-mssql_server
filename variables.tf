@@ -85,7 +85,7 @@ variable "identity" {
   default = null
 
   validation {
-    condition = var.identity == null || contains([
+    condition = var.identity == null ? true : contains([
       "SystemAssigned",
       "UserAssigned",
       "SystemAssigned, UserAssigned"
@@ -94,8 +94,7 @@ variable "identity" {
   }
 
   validation {
-    condition = (
-      var.identity == null ||
+    condition = var.identity == null ? true : (
       var.identity.type == "SystemAssigned" ||
       (var.identity.identity_ids != null && length(var.identity.identity_ids) > 0)
     )

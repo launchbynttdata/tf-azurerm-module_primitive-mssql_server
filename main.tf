@@ -57,8 +57,7 @@ resource "azurerm_mssql_server" "mssql_server" {
     }
 
     precondition {
-      condition = (
-        var.identity == null ||
+      condition = var.identity == null ? true : (
         var.identity.type == "SystemAssigned" ||
         (var.primary_user_assigned_identity_id != null && var.primary_user_assigned_identity_id != "")
       )
