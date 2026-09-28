@@ -209,7 +209,7 @@ variable "public_network_access_enabled" {
 }
 
 variable "outbound_network_restriction_enabled" {
-  description = "Whether outbound network traffic is restricted for this SQL Server."
+  description = "Whether outbound network traffic is restricted for this SQL Server. The complete example defaults to true; the primitive module defaults to false."
   type        = bool
   default     = true
 }
