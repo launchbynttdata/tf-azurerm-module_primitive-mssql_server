@@ -15,8 +15,9 @@ terraform {
 
   required_providers {
     azurerm = {
-      source  = "hashicorp/azurerm"
-      version = ">= 4.0, < 5.0"
+      source = "hashicorp/azurerm"
+      # ~> 4.26 requires 4.26.0 (express_vulnerability_assessment_enabled) and excludes 5.0.
+      version = "~> 4.26"
     }
     random = {
       source  = "hashicorp/random"
