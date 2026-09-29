@@ -11,8 +11,13 @@
 // limitations under the License.
 
 variable "name" {
-  description = "Name of the Microsoft SQL Server. Must be globally unique."
+  description = "Name of the Microsoft SQL Server. Must be globally unique. Azure requires 1-63 lowercase letters, digits, or hyphens, and the name must not start or end with a hyphen."
   type        = string
+
+  validation {
+    condition     = can(regex("^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$", var.name))
+    error_message = "name must be 1-63 lowercase letters, digits, or hyphens, and must not start or end with a hyphen."
+  }
 }
 
 variable "resource_group_name" {
